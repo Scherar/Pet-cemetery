@@ -59,4 +59,4 @@ Typecheck, Lint, Tests grün; Eingaben validiert; Rechte serverseitig geprüft; 
 
 ## Landschaft austauschen
 
-Die Grafik liegt unter `public/friedhofslandschaft.svg`. Die Pin-Plätze (`src/lib/slots.ts`) und die Zeichenfläche (`SCENE` in `src/lib/config.ts`) beziehen sich auf deren viewBox 1200x800. Bei einer anderen Grafik beides anpassen.
+Die Grafik liegt unter `public/friedhofslandschaft.svg`. Die Pin-Plätze (`src/lib/slots.ts`) und die Zeichenfläche (`SCENE` in `src/lib/config.ts`) beziehen sich auf deren viewBox 1200x800. Bei einer anderen Grafik beides anpassen. Ebenso die Brücken (`src/lib/scene.ts`) und die Bachlinie für das Wasserglitzern (`src/components/Cemetery.tsx`).
