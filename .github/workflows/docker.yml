@@ -29,13 +29,13 @@ jobs:
 
       - name: Startet der Container?
         run: |
-          docker run -d --name t -p 3000:3000 -e APP_URL=http://localhost:3000 pet-cemetery:test
+          docker run -d --name pet-test -p 3000:3000 -e APP_URL=http://localhost:3000 pet-cemetery:test
           for i in $(seq 1 30); do
             code=$(curl -s -o /dev/null -w '%{http_code}' http://localhost:3000/ || true)
             [ "$code" = "200" ] && echo "Startseite 200" && exit 0
             sleep 2
           done
-          docker logs t
+          docker logs pet-test
           exit 1
 
       - uses: docker/login-action@v3
