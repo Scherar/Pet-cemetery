@@ -38,6 +38,8 @@
     <path d="M116 827c45-106 117-159 217-190 125-39 230-23 327-68 105-49 145-132 265-138 99-5 156 46 209 92" stroke-width="38"/>
     <path d="M223 401c39-70 103-104 194-110 114-8 184 29 291 12 111-18 166-82 273-73" stroke-width="31"/>
     <path d="M500 816c22-69 79-101 160-113 85-13 145 16 219-4 69-19 113-66 167-86" stroke-width="29"/>
+    <!-- Fortsetzung hinter der Brücke: führt ans nördliche Ufer und trifft den oberen Weg -->
+    <path d="M1046 613C1086 599 1130 565 1134 523" stroke-width="29"/>
     <path d="M-30 463C138 421 258 399 382 414s179 57 301 46c124-11 215-70 353-39 67 15 119 39 190 30" stroke="#f5edda" stroke-width="3" opacity=".55"/>
   </g>
 
@@ -52,7 +54,7 @@
     <use xlink:href="#smallTree" transform="translate(83 390) scale(.9)"/>
     <use xlink:href="#tree" transform="translate(1129 445) scale(.88)"/>
     <use xlink:href="#tree" transform="translate(168 568) scale(.96)"/>
-    <use xlink:href="#smallTree" transform="translate(1020 582) scale(.92)"/>
+    <use xlink:href="#smallTree" transform="translate(985 545) scale(.92)"/> <!-- verschoben: Brücke verdeckte den Stamm -->
     <use xlink:href="#smallTree" transform="translate(364 619) scale(.78)"/>
     <use xlink:href="#tree" transform="translate(829 675) scale(.8)"/>
   </g>

@@ -7,5 +7,5 @@ export interface Bridge { x: number; y: number; angle: number; length: number; w
 
 export const BRIDGES: Bridge[] = [
   { x: 200, y: 707, angle: -41, length: 128, width: 46 }, // Weg unten links
-  { x: 1018, y: 626, angle: -28, length: 150, width: 36 }, // Weg unten rechts (endet im Bach)
+  { x: 1018, y: 626, angle: -28, length: 150, width: 36 }, // Weg unten rechts (führt am Nordufer weiter)
 ];
