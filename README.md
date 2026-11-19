@@ -25,6 +25,10 @@ npm run dev                  # http://localhost:3000
 | `npm test` | Unit-Tests (Kerze, Abo, Limits, Sichtbarkeit) |
 | `npm run build` | Produktions-Build |
 
+## Hosting-Test (mittwald, HTTPS)
+
+Anleitung: `docs/DEPLOY_MITTWALD.md` (App lauscht auf `PORT`, HTTPS übernimmt der Hoster; auch als `Dockerfile`).
+
 ## Täglicher Job (Erinnerungen)
 
 Einmal täglich aufrufen: `curl -H "Authorization: Bearer $CRON_SECRET" $APP_URL/api/cron/reminders`

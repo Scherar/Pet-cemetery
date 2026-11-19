@@ -8,7 +8,7 @@ const g = globalThis as unknown as { __db?: Db };
 export function db(): Db {
   if (g.__db) return g.__db;
   const { DatabaseSync } = process.getBuiltinModule('node:sqlite') as typeof import('node:sqlite');
-  const dir = path.join(process.cwd(), 'data');
+  const dir = process.env.DATA_DIR ?? path.join(process.cwd(), 'data');
   fs.mkdirSync(dir, { recursive: true });
   const d = new DatabaseSync(process.env.DB_FILE ?? path.join(dir, 'app.db'));
   d.exec('PRAGMA journal_mode = WAL; PRAGMA foreign_keys = ON;');

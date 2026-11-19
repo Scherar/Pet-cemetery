@@ -8,7 +8,7 @@ export async function sendMail(to: string, subject: string, text: string) {
     // [PLATZHALTER – EU-Mail-Anbieter anbinden]
     throw new Error('Mail-Anbieter noch nicht angebunden');
   }
-  const dir = path.join(process.cwd(), 'storage', 'outbox');
+  const dir = path.join(process.env.STORAGE_DIR ?? path.join(process.cwd(), 'storage'), 'outbox');
   await fs.mkdir(dir, { recursive: true });
   await fs.writeFile(path.join(dir, `${Date.now()}-${crypto.randomUUID()}.json`), JSON.stringify({ to, subject, text }, null, 2));
 }

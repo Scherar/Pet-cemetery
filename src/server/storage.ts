@@ -3,7 +3,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 
 // Lokaler Speicher. Für Livebetrieb: S3-kompatibel (EU), Tausch nur hier.
-const ROOT = path.join(process.cwd(), 'storage');
+const ROOT = process.env.STORAGE_DIR ?? path.join(process.cwd(), 'storage');
 
 export async function saveFile(buf: Buffer, ext: string): Promise<string> {
   const name = `${crypto.randomUUID()}.${ext}`;
