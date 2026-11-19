@@ -36,6 +36,7 @@ export function Cemetery({ pins }: { pins: Pin[] }) {
         <div className="relative" style={{ width: `max(${zoom * 100}%, ${Math.round(820 * zoom)}px)`, aspectRatio: `${SCENE.w} / ${SCENE.h}` }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/friedhofslandschaft.svg" alt="Stilisierte Landschaft mit Wegen, Bäumen und einem Bach" draggable={false} className="absolute inset-0 h-full w-full select-none" />
+          <WaterShimmer />
           {pins.map((p) => (
             <button
               key={p.id} type="button" disabled={!p.clickable} onClick={() => setSel(p)}
@@ -72,5 +73,18 @@ export function Cemetery({ pins }: { pins: Pin[] }) {
         </div>
       )}
     </div>
+  );
+}
+
+/** Sanftes Glitzern auf dem Bach der Landschaft; Linie entspricht dem Bach in public/friedhofslandschaft.svg. Bei reduzierter Bewegung statisch. */
+const CREEK = 'M-35 699C118 661 216 725 356 735s204-37 324-70 207-62 319-43 168 45 236 33';
+function WaterShimmer() {
+  return (
+    <svg aria-hidden viewBox={`0 0 ${SCENE.w} ${SCENE.h}`} preserveAspectRatio="none" className="pointer-events-none absolute inset-0 h-full w-full">
+      <g fill="none" stroke="#ffffff" strokeLinecap="round">
+        <path className="ripple ripple-a" d={CREEK} strokeWidth="3" opacity=".55" transform="translate(0 -8)" />
+        <path className="ripple ripple-b" d={CREEK} strokeWidth="2.5" opacity=".4" transform="translate(0 9)" />
+      </g>
+    </svg>
   );
 }
