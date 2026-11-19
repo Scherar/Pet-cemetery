@@ -9,7 +9,7 @@ Stand: v1. Grundlage: `CLAUDE.md` v2. Dieser Plan setzt die dort markierten offe
 | Stack | Next.js (App Router), TypeScript strict, Tailwind | PHP/Laravel |
 | Datenbank | SQLite (Node-eingebaut) hinter `src/server/db.ts`; Schema ist Postgres-nah | Postgres für Livebetrieb (Tausch nur in `db.ts`) |
 | Dateispeicher | Lokales Verzeichnis `storage/` hinter `src/server/storage.ts` | S3-kompatibel (EU) |
-| Friedhofsgrafik | Inline-SVG | Canvas/WebGL |
+| Friedhofsgrafik | Vom Auftraggeber gelieferte SVG `public/friedhofslandschaft.svg` (viewBox 1200x800), Pins als Buttons darüber | Canvas/WebGL |
 | Pin-Platzierung | Automatisch auf festen Plätzen | Kunde wählt |
 | Limits | 20 Bilder, 4 Videos, je 5 MB, pro Grab | pro Kunde |
 | Prüfung | Vorabprüfung: öffentlich/Link-Sicht erst nach Freigabe | Nachprüfung |
@@ -56,3 +56,7 @@ Grundsatz: Geschäftslogik als reine Funktionen in `src/lib`, Berechtigungen imm
 ## Definition of Done je Meilenstein
 
 Typecheck, Lint, Tests grün; Eingaben validiert; Rechte serverseitig geprüft; keine Geheimnisse im Repo.
+
+## Landschaft austauschen
+
+Die Grafik liegt unter `public/friedhofslandschaft.svg`. Die Pin-Plätze (`src/lib/slots.ts`) und die Zeichenfläche (`SCENE` in `src/lib/config.ts`) beziehen sich auf deren viewBox 1200x800. Bei einer anderen Grafik beides anpassen.

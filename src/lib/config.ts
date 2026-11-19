@@ -15,3 +15,6 @@ export type PlanId = keyof typeof PLANS;
 export const CANDLE_DAYS_AFTER = 5;
 export const TIMEZONE = 'Europe/Berlin';
 export const SLOT_COUNT = 24;
+
+/** Zeichenfläche der Friedhofslandschaft (viewBox von public/friedhofslandschaft.svg). Die Pin-Plätze in slots.ts beziehen sich darauf. */
+export const SCENE = { w: 1200, h: 800 } as const;
