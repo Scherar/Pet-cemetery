@@ -14,7 +14,7 @@ Geprüft: `PORT=8080 npm start` startet die App im Produktionsmodus auf dem gew�
 - **Node.js 22.13 oder neuer** (wegen `node:sqlite`). Ob Ihr Tarif/Ihre Umgebung das anbietet, bitte in mStudio prüfen. Mit Node 20 startet die App nicht. Alternative: Container-Betrieb (siehe unten).
 - Eine Domain/Subdomain mit HTTPS auf dem Projekt.
 
-## Variante A: Node.js-App in mStudio
+## Variante A: Node.js-App in mStudio (nur mit npm auf dem Server)
 
 1. Repository auf den Server bringen (git clone oder Upload) und im App-Ordner ausführen:
    ```bash
@@ -35,10 +35,29 @@ Geprüft: `PORT=8080 npm start` startet die App im Produktionsmodus auf dem gew�
 3. Startbefehl: `npm start`.
 4. Domain auf die App legen (Ingress/Proxy auf den App-Port), HTTPS aktivieren.
 
-## Variante B: Container
+## Variante B: Container (empfohlen, wenn auf dem Server kein npm vorhanden ist)
 
-Es gibt ein `Dockerfile` (Node 22). Es lauscht auf Port 3000 und erwartet zwei Volumes: `/data` (Datenbank) und `/storage` (Uploads). Die Umgebungsvariablen wie oben, `PORT=3000`. In mStudio den Container-Port 3000 mit der Domain verbinden und die beiden Volumes einrichten.
-Nicht geprüft: Der Image-Build wurde hier nicht ausgeführt.
+Auf dem Server wird weder npm noch Node installiert: Das Image enthält alles. Gebaut wird es automatisch bei GitHub (`.github/workflows/docker.yml`) bei jedem Push auf `main` und unter Actions auch per Hand startbar. Der Workflow startet das Image einmal zur Probe (Startseite muss 200 liefern) und veröffentlicht es dann unter
+`ghcr.io/scherar/pet-cemetery:latest`.
+
+**Einmalig bei GitHub:** Nach dem ersten erfolgreichen Lauf unter dem Repository „Packages“ das Paket öffnen. Standardmäßig ist es privat. Zwei Wege:
+- Paket auf **öffentlich** stellen (einfach; das Image enthält keine Zugangsdaten, aber den Programmcode), oder
+- privat lassen und in mittwald Zugangsdaten für die Registry `ghcr.io` hinterlegen (GitHub-Token mit Leserecht `read:packages`).
+
+**In mStudio** (Bezeichnungen können abweichen, siehe mittwald-Doku zu Containern):
+1. Neuen Container aus dem Image `ghcr.io/scherar/pet-cemetery:latest` anlegen.
+2. Port **3000** (HTTP) mit Ihrer Domain verbinden; HTTPS übernimmt mittwald.
+3. Zwei persistente Volumes einbinden: `/data` (Datenbank) und `/storage` (Uploads).
+4. Umgebungsvariablen setzen (nicht ins Repository):
+   ```
+   APP_URL=https://ihre-domain.de
+   ADMIN_EMAILS=ihre@mail.de
+   CRON_SECRET=<langer Zufallstext>
+   ```
+   `NODE_ENV`, `PORT=3000`, `DATA_DIR=/data` und `STORAGE_DIR=/storage` sind im Image bereits gesetzt.
+5. Container starten. Update später: Image neu ziehen/Container neu starten.
+
+Nicht geprüft: Der Image-Build lief in dieser Entwicklungsumgebung nicht (kein Docker-Dienst). Der erste echte Build ist der GitHub-Lauf; schlägt er fehl, bitte die Logs unter Actions weitergeben.
 
 ## Nach dem Start prüfen
 
