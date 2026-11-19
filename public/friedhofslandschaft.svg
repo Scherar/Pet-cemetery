@@ -39,7 +39,8 @@
     <path d="M223 401c39-70 103-104 194-110 114-8 184 29 291 12 111-18 166-82 273-73" stroke-width="31"/>
     <!-- Fortsetzung des obersten Wegs bis über den rechten Bildrand hinaus -->
     <path d="M981 230C1040 236 1120 212 1250 192" stroke-width="31"/>
-    <path d="M500 816c22-69 79-101 160-113 85-13 145 16 219-4 69-19 113-66 167-86" stroke-width="29"/>
+    <!-- unterster Weg: Kurve nach unten gelegt, damit er den Bach nicht mehr berührt -->
+    <path d="M500 816c20-40 70-62 160-70 85-8 155-12 219-47 69-19 113-66 167-86" stroke-width="29"/>
     <!-- Fortsetzung hinter der Brücke: führt ans nördliche Ufer und trifft den oberen Weg -->
     <path d="M1046 613C1086 599 1130 565 1134 523" stroke-width="29"/>
     <path d="M-30 463C138 421 258 399 382 414s179 57 301 46c124-11 215-70 353-39 67 15 119 39 190 30" stroke="#f5edda" stroke-width="3" opacity=".55"/>
@@ -58,6 +59,6 @@
     <use xlink:href="#tree" transform="translate(168 568) scale(.96)"/>
     <use xlink:href="#smallTree" transform="translate(985 545) scale(.92)"/> <!-- verschoben: Brücke verdeckte den Stamm -->
     <use xlink:href="#smallTree" transform="translate(364 619) scale(.78)"/>
-    <use xlink:href="#tree" transform="translate(829 748) scale(.8)"/> <!-- nach unten versetzt: stand im Weg -->
+    <use xlink:href="#tree" transform="translate(829 762) scale(.8)"/> <!-- nach unten versetzt: stand im Weg -->
   </g>
 </svg>
