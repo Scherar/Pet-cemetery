@@ -9,7 +9,7 @@ Stand: v1. Grundlage: `CLAUDE.md` v2. Dieser Plan setzt die dort markierten offe
 | Stack | Next.js (App Router), TypeScript strict, Tailwind | PHP/Laravel |
 | Datenbank | SQLite (Node-eingebaut) hinter `src/server/db.ts`; Schema ist Postgres-nah | Postgres für Livebetrieb (Tausch nur in `db.ts`) |
 | Dateispeicher | Lokales Verzeichnis `storage/` hinter `src/server/storage.ts` | S3-kompatibel (EU) |
-| Friedhofsgrafik | Vom Auftraggeber gelieferte SVG `public/friedhofslandschaft.svg` (viewBox 1200x800), Pins als Buttons darüber | Canvas/WebGL |
+| Friedhofsgrafik | Vom Auftraggeber geliefertes Landschaftsbild `public/friedhofslandschaft.webp` (1672x941), Pins als Buttons darüber | Canvas/WebGL |
 | Pin-Platzierung | Automatisch auf festen Plätzen | Kunde wählt |
 | Limits | 20 Bilder, 4 Videos, je 5 MB, pro Grab | pro Kunde |
 | Prüfung | Vorabprüfung: öffentlich/Link-Sicht erst nach Freigabe | Nachprüfung |
@@ -59,4 +59,10 @@ Typecheck, Lint, Tests grün; Eingaben validiert; Rechte serverseitig geprüft; 
 
 ## Landschaft austauschen
 
-Die Grafik liegt unter `public/friedhofslandschaft.svg`. Die Pin-Plätze (`src/lib/slots.ts`) und die Zeichenfläche (`SCENE` in `src/lib/config.ts`) beziehen sich auf deren viewBox 1200x800. Bei einer anderen Grafik beides anpassen. Ebenso die Brücken (`src/lib/scene.ts`) und die Bachlinie für das Wasserglitzern (`src/components/Cemetery.tsx`).
+Das Bild liegt unter `public/friedhofslandschaft.webp` (Größe in `SCENE`, `src/lib/config.ts`). Die Pin-Plätze (`src/lib/slots.ts`) liegen nur auf freier Wiese, nicht auf Wegen, im Bach, auf Brücken oder zwischen/auf Bäumen. Sie werden berechnet mit:
+
+```bash
+python3 tools/landscape_slots.py public/friedhofslandschaft.webp 24
+```
+
+(Python 3 mit Pillow und numpy; die Farbschwellen passen zur hellen Wiese der aktuellen Grafik.) Das Ergebnis in `slots.ts` eintragen und `SCENE` anpassen; `tools/slots_preview.png` zeigt die Plätze. Der Bach ist im Bild nicht animiert. Die frühere SVG-Landschaft (`public/friedhofslandschaft.svg`, mit animiertem Bach und Brücken in `src/lib/scene.ts`) bleibt im Repository, wird aber nicht mehr verwendet.

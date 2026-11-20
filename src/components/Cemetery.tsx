@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from 'react';
 import { GraveCard, type CardData } from './GraveCard';
 import { Candle } from './Candle';
 import { SCENE } from '@/lib/config';
-import { BRIDGES, type Bridge } from '@/lib/scene';
 
 export interface Pin { id: number; name: string; x: number; y: number; pinUrl: string | null; candle: boolean; clickable: boolean; token?: string | null }
 
@@ -36,9 +35,7 @@ export function Cemetery({ pins }: { pins: Pin[] }) {
       <div className="overflow-auto rounded-2xl border border-[var(--line)]" tabIndex={0} aria-label="Friedhofsübersicht, scrollbar">
         <div className="relative" style={{ width: `max(${zoom * 100}%, ${Math.round(820 * zoom)}px)`, aspectRatio: `${SCENE.w} / ${SCENE.h}` }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/friedhofslandschaft.svg" alt="Stilisierte Landschaft mit Wegen, Bäumen und einem Bach" draggable={false} className="absolute inset-0 h-full w-full select-none" />
-          <WaterShimmer />
-          <Bridges />
+          <img src={SCENE.src} alt="Stilisierte Landschaft mit Wiesen, Wegen, Bäumen, einem Bach und Brücken" draggable={false} className="absolute inset-0 h-full w-full select-none" />
           {pins.map((p) => (
             <button
               key={p.id} type="button" disabled={!p.clickable} onClick={() => setSel(p)}
@@ -50,9 +47,9 @@ export function Cemetery({ pins }: { pins: Pin[] }) {
                 {p.candle && <span className="absolute -top-7 left-1/2 -translate-x-1/2"><Candle size={16} /></span>}
                 {p.pinUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={p.pinUrl} alt="" className="h-11 w-11 rounded-full border-[3px] border-white object-cover shadow-lg transition group-hover:scale-110 group-focus-visible:scale-110 sm:h-14 sm:w-14" />
+                  <img src={p.pinUrl} alt="" className="h-11 w-11 rounded-full border-[3px] border-white object-cover shadow-lg transition group-hover:scale-110 group-focus-visible:scale-110 sm:h-12 sm:w-12" />
                 ) : (
-                  <span aria-hidden className="grid h-11 w-11 place-items-center rounded-full border-[3px] border-white bg-[#6c9a77] text-lg text-white shadow-lg transition group-hover:scale-110 sm:h-14 sm:w-14">{p.name.slice(0, 1)}</span>
+                  <span aria-hidden className="grid h-11 w-11 place-items-center rounded-full border-[3px] border-white bg-[#6c9a77] text-lg text-white shadow-lg transition group-hover:scale-110 sm:h-12 sm:w-12">{p.name.slice(0, 1)}</span>
                 )}
               </span>
               <span className="mt-1 block rounded-full bg-white/85 px-2 text-xs text-[#26332b]">{p.name}</span>
@@ -75,45 +72,5 @@ export function Cemetery({ pins }: { pins: Pin[] }) {
         </div>
       )}
     </div>
-  );
-}
-
-/** Sanftes Glitzern auf dem Bach der Landschaft; Linie entspricht dem Bach in public/friedhofslandschaft.svg. Bei reduzierter Bewegung statisch. */
-const CREEK = 'M-35 699C118 661 216 725 356 735s204-37 324-70 207-62 319-43 168 45 236 33';
-function WaterShimmer() {
-  return (
-    <svg aria-hidden viewBox={`0 0 ${SCENE.w} ${SCENE.h}`} preserveAspectRatio="none" className="pointer-events-none absolute inset-0 h-full w-full">
-      <g fill="none" stroke="#ffffff" strokeLinecap="round">
-        <path className="ripple ripple-a" d={CREEK} strokeWidth="3" opacity=".55" transform="translate(0 -8)" />
-        <path className="ripple ripple-b" d={CREEK} strokeWidth="2.5" opacity=".4" transform="translate(0 9)" />
-      </g>
-    </svg>
-  );
-}
-
-function BridgeShape({ b }: { b: Bridge }) {
-  const hl = b.length / 2, hw = b.width / 2;
-  const planks = Array.from({ length: Math.floor(b.length / 11) - 1 }, (_, i) => -hl + 11 * (i + 1));
-  return (
-    <g transform={`translate(${b.x} ${b.y}) rotate(${b.angle})`}>
-      <rect x={-hl + 2} y={-hw + 5} width={b.length} height={b.width + 4} rx="6" fill="#26332b" opacity=".16" />
-      <rect x={-hl} y={-hw} width={b.length} height={b.width} rx="6" fill="#d2ad7b" stroke="#8a6a43" strokeWidth="2" />
-      {planks.map((x) => <line key={x} x1={x} x2={x} y1={-hw + 2} y2={hw - 2} stroke="#b08d5e" strokeWidth="1.6" />)}
-      {[-1, 1].map((side) => (
-        <g key={side}>
-          <rect x={-hl} y={side * (hw + 1) - 3} width={b.length} height="6" rx="3" fill="#7d5c3b" />
-          {[-hl + 4, -hl / 2, 0, hl / 2, hl - 4].map((x) => <circle key={x} cx={x} cy={side * (hw + 1)} r="4.2" fill="#6a4c30" />)}
-        </g>
-      ))}
-    </g>
-  );
-}
-
-/** Kleine Holzbrücken über dem Bach (nur Zierde, über dem Wasserglitzern, unter den Pins). */
-function Bridges() {
-  return (
-    <svg aria-hidden viewBox={`0 0 ${SCENE.w} ${SCENE.h}`} preserveAspectRatio="none" className="pointer-events-none absolute inset-0 h-full w-full">
-      {BRIDGES.map((b, i) => <BridgeShape key={i} b={b} />)}
-    </svg>
   );
 }

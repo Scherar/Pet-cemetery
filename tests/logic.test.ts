@@ -3,7 +3,8 @@ import { isCandleActive, isAnniversaryToday } from '@/lib/candle';
 import { hasAccess, applyEvent } from '@/lib/subscription';
 import { checkUpload, sniffMime } from '@/lib/limits';
 import { canViewGrave, canViewMedia, listedPublicly } from '@/lib/visibility';
-import { nextSlot } from '@/lib/slots';
+import { nextSlot, SLOTS } from '@/lib/slots';
+import { SCENE } from '@/lib/config';
 
 const at = (iso: string) => new Date(iso + 'T12:00:00+01:00');
 
@@ -82,5 +83,16 @@ describe('Plätze', () => {
   it('nächster freier Platz', () => {
     expect(nextSlot([])).toBe(0);
     expect(nextSlot([0, 1, 3])).toBe(2);
+  });
+});
+
+describe('Pin-Plätze', () => {
+  it('liegen im Bild und überdecken sich nicht', () => {
+    expect(SLOTS.length).toBe(24);
+    for (const s of SLOTS) { expect(s.x).toBeGreaterThan(60); expect(s.x).toBeLessThan(SCENE.w - 60); expect(s.y).toBeGreaterThan(60); expect(s.y).toBeLessThan(SCENE.h - 60); }
+    for (let i = 0; i < SLOTS.length; i++) for (let j = i + 1; j < SLOTS.length; j++) {
+      const dx = Math.abs(SLOTS[i].x - SLOTS[j].x), dy = Math.abs(SLOTS[i].y - SLOTS[j].y);
+      expect(Math.max(dx / 100, dy / 115)).toBeGreaterThanOrEqual(1);
+    }
   });
 });

@@ -1,4 +1,7 @@
 /**
+ * HINWEIS: Wird seit dem Wechsel auf das Landschaftsbild (webp) nicht mehr verwendet; das Bild enthält die Brücken selbst.
+ * Nur noch für die frühere SVG-Landschaft (public/friedhofslandschaft.svg) gedacht.
+ *
  * Brücken an den Stellen, an denen ein Weg den Bach kreuzt (Koordinaten in der viewBox 1200x800
  * von public/friedhofslandschaft.svg). Position und Winkel stammen aus den Linien der SVG.
  * Wird die Grafik geändert, müssen die Brücken angepasst werden.
