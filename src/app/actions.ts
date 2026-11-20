@@ -11,6 +11,7 @@ import { addPeriod } from '@/lib/subscription';
 import { PLANS, type PlanId } from '@/lib/config';
 import { sendMail } from '@/server/mail';
 import { sendVerification } from '@/server/verify';
+import { sendPasswordReset, consumeReset, resetTokenValid } from '@/server/reset';
 import { appUrl } from '@/server/paypal';
 
 const fail = (path: string, msg: string): never => redirect(`${path}${path.includes('?') ? '&' : '?'}fehler=${encodeURIComponent(msg)}`);
@@ -45,6 +46,30 @@ export async function login(f: FormData) {
   if (!u!.email_verified_at) fail('/anmelden?neu=1', 'Bitte bestätigen Sie zuerst Ihre E-Mail-Adresse. Wir haben Ihnen dazu eine Nachricht geschickt.');
   await createSession(u!.id);
   redirect('/konto');
+}
+
+/** Link zum Zurücksetzen anfordern. Antwort ist immer gleich, damit nicht ablesbar ist, welche Adressen registriert sind. */
+export async function requestPasswordReset(f: FormData) {
+  const email = str(f, 'email').toLowerCase();
+  const u = get<{ id: number; email_verified_at: string | null }>('SELECT id, email_verified_at FROM users WHERE email = ?', email);
+  if (u) {
+    try { if (u.email_verified_at) await sendPasswordReset(u.id, email); else await sendVerification(u.id, email); }
+    catch { /* Fehler nicht preisgeben */ }
+  }
+  redirect('/passwort-vergessen?gesendet=1');
+}
+
+export async function setNewPassword(f: FormData) {
+  const token = str(f, 'token');
+  const back = `/passwort-neu?token=${encodeURIComponent(token)}`;
+  if (!resetTokenValid(token)) redirect('/passwort-neu');
+  const pw = str(f, 'pw');
+  if (pw.length < 10) fail(back, 'Das Passwort braucht mindestens 10 Zeichen.');
+  if (pw !== str(f, 'pw2')) fail(back, 'Die beiden Passwörter stimmen nicht überein.');
+  const email = consumeReset(token, hashPassword(pw));
+  if (!email) redirect('/passwort-neu');
+  try { await sendMail(email, 'Ihr Passwort wurde geändert', 'Guten Tag,\n\nIhr Passwort wurde soeben geändert. Falls Sie das nicht waren, fordern Sie bitte sofort über „Passwort vergessen“ ein neues an und wenden Sie sich an uns.\n'); } catch { /* nicht kritisch */ }
+  redirect('/anmelden?zurueckgesetzt=1');
 }
 
 export async function logout() { await destroySession(); redirect('/'); }

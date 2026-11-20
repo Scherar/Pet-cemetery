@@ -14,6 +14,7 @@ npm run dev                  # http://localhost:3000
 
 - Ohne PayPal-Zugangsdaten läuft ein **Test-Modus** (Zahlung wird simuliert, unter `/konto/abo/test`).
 - **E-Mail-Bestätigung:** Neue Konten müssen ihre Adresse per Link bestätigen. Lokal ohne SMTP landen die Mails als Datei in `storage/outbox/` (und ein Hinweis im Protokoll); den Bestätigungslink aus dieser Datei im Browser öffnen. Für echten Versand `SMTP_*` und `MAIL_FROM` setzen (`.env.example`).
+- **Passwort vergessen:** unter `/passwort-vergessen`; lokal liegt die Mail mit dem Link in `storage/outbox/`.
 - Admin-Zugang (Prüfung von Bildern/Videos): E-Mail in `ADMIN_EMAILS` eintragen, dann dort registrieren.
 - Daten: SQLite unter `data/`, Uploads unter `storage/` (beides nicht im Repo). Für den Livebetrieb Postgres und S3-kompatiblen Speicher vorsehen (Tausch in `src/server/db.ts` und `src/server/storage.ts`).
 

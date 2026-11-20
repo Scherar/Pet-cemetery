@@ -126,6 +126,7 @@ Grundregeln für den Code:
 - Geschäftslogik (Kerze, Abo-Laufzeit, Erinnerungsdatum) in eigenen, getesteten Modulen, nicht in UI-Komponenten.
 - Berechtigungen immer serverseitig prüfen, nie nur im UI verstecken.
 - **Registrierung mit E-Mail-Bestätigung:** Konten sind erst nach Klick auf den Link in der Bestätigungs-Mail nutzbar (Link 24 h gültig, einmalig, erneuter Versand höchstens einmal pro Minute, gleiche Antwort für unbekannte Adressen). Dafür ist SMTP nötig (`SMTP_*`, `MAIL_FROM`).
+- **Passwort zurücksetzen:** Link per Mail (60 Minuten gültig, einmalig, höchstens eine Mail pro Minute, gleiche Antwort für unbekannte Adressen). Nach dem Zurücksetzen werden alle Sitzungen abgemeldet und eine Hinweis-Mail geschickt. Unbestätigte Konten erhalten stattdessen die Bestätigungs-Mail.
 - Eingaben validieren (z. B. zod), Uploads auf Typ/Größe prüfen, EXIF-Metadaten (Standort!) beim Verarbeiten entfernen.
 - Performance: Bilder responsiv und lazy laden (WebP/AVIF), Übersicht mit großen Datenmengen (viele Gräber) virtualisieren oder nachladen. Zielwerte: **[PLATZHALTER – ergänzen]**.
 
