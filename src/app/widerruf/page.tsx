@@ -1,5 +1,4 @@
-import { de } from '@/i18n/de';
+import { Legal } from '@/components/Legal';
+import text from '@/legal/widerruf';
 export const metadata = { title: 'Widerrufsbelehrung' };
-export default function Page() {
-  return (<article className="card mx-auto mt-6 max-w-2xl space-y-3 p-6"><h1 className="font-serif text-2xl">Widerrufsbelehrung</h1><p>{de.legal}</p></article>);
-}
+export default function Page() { return <Legal title="Widerrufsbelehrung" text={text} />; }

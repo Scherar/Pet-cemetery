@@ -19,3 +19,4 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .ripple-a { stroke-dasharray: 24 46; animation: ripple-a 9s linear infinite; }
 .ripple-b { stroke-dasharray: 16 80; animation: ripple-b 13s linear infinite; }
 @media (prefers-reduced-motion: reduce) { .flame, .glow, .creek, .ripple { animation: none !important; } * { scroll-behavior: auto !important; } }
+mark { background: #ffe58a; color: #3b2f00; border-radius: .25rem; padding: 0 .2rem; }

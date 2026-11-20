@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { currentUser } from '@/server/auth';
 import { userSub, userHasAccess } from '@/server/domain';
@@ -37,7 +38,12 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ f
               <label className="flex items-center gap-2"><input type="radio" name="plan" value="yearly" /> {de.plans.yearly}</label>
             </fieldset>
             <p className="text-sm text-[var(--muted)]">{de.abo.renew}</p>
-            <button className="btn">Weiter mit PayPal</button>
+            <label className="flex items-start gap-2 text-sm"><input type="checkbox" name="agb" required className="mt-1" />
+              <span>Ich habe die <Link className="underline" href="/agb" target="_blank">Allgemeinen Geschäftsbedingungen</Link> und die <Link className="underline" href="/datenschutz" target="_blank">Datenschutzerklärung</Link> gelesen und akzeptiere die AGB. Die <Link className="underline" href="/widerruf" target="_blank">Widerrufsbelehrung</Link> habe ich zur Kenntnis genommen.</span></label>
+            <label className="flex items-start gap-2 text-sm"><input type="checkbox" name="sofort" required className="mt-1" />
+              <span>{de.abo.sofort}</span></label>
+            <button className="btn">Zahlungspflichtig abonnieren</button>
+            <p className="text-xs text-[var(--muted)]">Sie werden anschließend zu PayPal weitergeleitet, um die Zahlung freizugeben.</p>
           </form>
         </section>
       )}

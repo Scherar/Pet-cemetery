@@ -1,5 +1,4 @@
-import { de } from '@/i18n/de';
+import { Legal } from '@/components/Legal';
+import text from '@/legal/datenschutz';
 export const metadata = { title: 'Datenschutzerklärung' };
-export default function Page() {
-  return (<article className="card mx-auto mt-6 max-w-2xl space-y-3 p-6"><h1 className="font-serif text-2xl">Datenschutzerklärung</h1><p>{de.legal}</p></article>);
-}
+export default function Page() { return <Legal title="Datenschutzerklärung" text={text} />; }

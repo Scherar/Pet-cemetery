@@ -184,6 +184,7 @@ export async function saveReminder(f: FormData) {
 export async function startSubscription(f: FormData) {
   const u = await requireUser();
   const plan = z.enum(['monthly', 'yearly']).parse(str(f, 'plan')) as PlanId;
+  if (f.get('agb') !== 'on' || f.get('sofort') !== 'on') fail('/konto/abo', 'Bitte bestätigen Sie die Geschäftsbedingungen und die Zustimmung zum Leistungsbeginn.');
   const { approveUrl, subId } = await createSubscription(plan, u.id);
   run(`INSERT INTO subscriptions (user_id, plan, status, paypal_sub_id) VALUES (?,?, 'none', ?)
        ON CONFLICT(user_id) DO UPDATE SET plan = excluded.plan, paypal_sub_id = excluded.paypal_sub_id,

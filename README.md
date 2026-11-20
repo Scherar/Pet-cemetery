@@ -31,6 +31,10 @@ npm run dev                  # http://localhost:3000
 
 Anleitung: `docs/DEPLOY_MITTWALD.md` (App lauscht auf `PORT`, HTTPS übernimmt der Hoster; auch als `Dockerfile`).
 
+## Rechtstexte
+
+Datenschutz, AGB und Widerruf liegen als Entwurf in `src/legal/*.ts` und werden auf `/datenschutz`, `/agb`, `/widerruf` angezeigt (Platzhalter gelb markiert, Entwurfshinweis oben, solange Platzhalter vorkommen). Kopien zum Bearbeiten/Weitergeben: `outputs/haustierfriedhof/`. **Nicht rechtlich geprüft.** Offen: Impressum, Kündigungsbutton ohne Anmeldung (§ 312k BGB).
+
 ## Täglicher Job (Erinnerungen)
 
 Einmal täglich aufrufen: `curl -H "Authorization: Bearer $CRON_SECRET" $APP_URL/api/cron/reminders`
