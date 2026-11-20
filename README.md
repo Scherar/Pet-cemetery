@@ -33,7 +33,7 @@ Anleitung: `docs/DEPLOY_MITTWALD.md` (App lauscht auf `PORT`, HTTPS übernimmt d
 
 ## Rechtstexte
 
-Datenschutz, AGB und Widerruf liegen als Entwurf in `src/legal/*.ts` und werden auf `/datenschutz`, `/agb`, `/widerruf` angezeigt (Platzhalter gelb markiert, Entwurfshinweis oben, solange Platzhalter vorkommen). Kopien zum Bearbeiten/Weitergeben: `outputs/haustierfriedhof/`. **Nicht rechtlich geprüft.** Offen: Impressum, Kündigungsbutton ohne Anmeldung (§ 312k BGB).
+Impressum, Datenschutz, AGB und Widerruf liegen als Entwurf in `src/legal/*.ts` und werden auf `/impressum`, `/datenschutz`, `/agb`, `/widerruf` angezeigt (Platzhalter gelb markiert, Entwurfshinweis oben, solange Platzhalter vorkommen). Kopien zum Bearbeiten/Weitergeben: `outputs/haustierfriedhof/`. **Nicht rechtlich geprüft.** Offen: Kündigungsbutton ohne Anmeldung (§ 312k BGB).
 
 ## Täglicher Job (Erinnerungen)
 
