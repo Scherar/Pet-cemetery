@@ -41,7 +41,7 @@ E-Mail: [PLATZHALTER – E-Mail-Adresse]
 
 (3) Das Abonnement verlängert sich automatisch um den jeweils gebuchten Zeitraum (einen Monat bzw. ein Jahr), wenn der Kunde nicht kündigt.
 
-(4) Der Kunde kann jederzeit kündigen. Die Kündigung wirkt zum Ende des bereits bezahlten Zeitraums; bis dahin kann der Kunde die Leistung weiter nutzen. Bereits bezahlte Entgelte für den laufenden Zeitraum werden bei Kündigung nicht anteilig erstattet, soweit gesetzlich nichts anderes gilt. Die Kündigung ist im Kundenkonto über die Schaltfläche „Abo kündigen“ möglich. [PLATZHALTER – Kündigungsbutton gemäß § 312k BGB auch ohne Anmeldung bereitstellen und hier beschreiben]
+(4) Der Kunde kann jederzeit kündigen. Die Kündigung wirkt zum Ende des bereits bezahlten Zeitraums; bis dahin kann der Kunde die Leistung weiter nutzen. Bereits bezahlte Entgelte für den laufenden Zeitraum werden bei Kündigung nicht anteilig erstattet, soweit gesetzlich nichts anderes gilt. Die Kündigung ist im Kundenkonto über die Schaltfläche „Abo kündigen“ möglich. Außerdem steht in der Fußzeile jeder Seite die Schaltfläche „Verträge hier kündigen“ bereit, über die der Kunde ohne Anmeldung kündigen kann. Der Anbieter bestätigt die Kündigung unverzüglich in Textform (E-Mail) unter Angabe von Datum, Uhrzeit und Beendigungszeitpunkt. [PLATZHALTER – rechtlich prüfen]
 
 (5) Das Recht beider Seiten zur Kündigung aus wichtigem Grund bleibt unberührt.
 

@@ -54,6 +54,9 @@ CREATE TABLE IF NOT EXISTS media (
 CREATE TABLE IF NOT EXISTS moderation_log (
   id INTEGER PRIMARY KEY, media_id INTEGER, grave_id INTEGER, admin_id INTEGER, action TEXT NOT NULL, reason TEXT,
   at TEXT NOT NULL DEFAULT (datetime('now')));
+CREATE TABLE IF NOT EXISTS cancellations (
+  id INTEGER PRIMARY KEY, user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  name TEXT NOT NULL, requested_at TEXT NOT NULL, via TEXT NOT NULL DEFAULT 'button');
 CREATE TABLE IF NOT EXISTS reminders_sent (grave_id INTEGER NOT NULL, year INTEGER NOT NULL, PRIMARY KEY (grave_id, year));
 CREATE TABLE IF NOT EXISTS webhook_events (id TEXT PRIMARY KEY, at TEXT NOT NULL DEFAULT (datetime('now')));
 CREATE TABLE IF NOT EXISTS reports (

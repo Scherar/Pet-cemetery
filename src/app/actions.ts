@@ -11,6 +11,7 @@ import { addPeriod } from '@/lib/subscription';
 import { PLANS, type PlanId } from '@/lib/config';
 import { sendMail } from '@/server/mail';
 import { sendVerification } from '@/server/verify';
+import { cancelContract } from '@/server/cancel';
 import { sendPasswordReset, consumeReset, resetTokenValid } from '@/server/reset';
 import { appUrl } from '@/server/paypal';
 
@@ -205,11 +206,18 @@ export async function mockActivate(f: FormData) {
 
 export async function cancelSub() {
   const u = await requireUser();
-  const sub = userSub(u.id);
-  if (!sub.paypalSubId) redirect('/konto/abo');
-  await cancelSubscription(sub.paypalSubId!);
-  run("UPDATE subscriptions SET status = 'cancelled' WHERE user_id = ?", u.id);
+  const r = await cancelContract(u.email, u.email, 'konto');
+  if (r === 'failed') redirect('/konto/abo?fehler=' + encodeURIComponent('Die Kündigung konnte gerade nicht ausgeführt werden. Bitte versuchen Sie es erneut.'));
   redirect('/konto/abo?gekuendigt=1');
+}
+
+/** Kündigungsbutton (§ 312k BGB): ohne Anmeldung erreichbar. Antwort ist für unbekannte Adressen gleich. */
+export async function cancelByButton(f: FormData) {
+  const p = z.object({ name: z.string().min(1).max(100), email: z.string().email() }).safeParse({ name: str(f, 'name'), email: str(f, 'email').toLowerCase() });
+  if (!p.success) fail('/kuendigen', 'Bitte geben Sie Ihren Namen und die E-Mail-Adresse Ihres Kontos an.');
+  const r = await cancelContract(p.data!.email, p.data!.name, 'button');
+  if (r === 'failed') fail('/kuendigen', 'Die Kündigung konnte gerade nicht ausgeführt werden. Bitte versuchen Sie es in einigen Minuten erneut oder schreiben Sie uns.');
+  redirect(`/kuendigen/bestaetigt?t=${encodeURIComponent(new Date().toISOString())}`);
 }
 
 export async function moderate(f: FormData) {

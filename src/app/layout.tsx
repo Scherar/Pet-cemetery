@@ -33,7 +33,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <footer className="mx-auto max-w-5xl px-4 pb-10 text-sm text-[var(--muted)]">
           <p>{de.fictionNote}</p>
           <p className="mt-2 flex gap-4">
-            <Link href="/impressum">Impressum</Link><Link href="/datenschutz">Datenschutz</Link><Link href="/agb">AGB</Link><Link href="/widerruf">Widerruf</Link>
+            <Link href="/kuendigen" className="font-medium underline">Verträge hier kündigen</Link><Link href="/impressum">Impressum</Link><Link href="/datenschutz">Datenschutz</Link><Link href="/agb">AGB</Link><Link href="/widerruf">Widerruf</Link>
           </p>
         </footer>
       </body>
