@@ -30,6 +30,7 @@ Geprüft: `PORT=8080 npm start` startet die App im Produktionsmodus auf dem gew�
    CRON_SECRET=<langer Zufallstext>
    DATA_DIR=<persistenter Ordner, z. B. /home/.../pet-data>
    STORAGE_DIR=<persistenter Ordner, z. B. /home/.../pet-storage>
+   SMTP_HOST=, SMTP_PORT=587, SMTP_USER=, SMTP_PASS=, MAIL_FROM=   (siehe Variante B: E-Mail-Versand ist Pflicht)
    ```
    `DATA_DIR` und `STORAGE_DIR` müssen **außerhalb** des Programmordners liegen, sonst gehen Datenbank und Uploads bei einem neuen Deployment verloren.
 3. Startbefehl: `npm start`.
@@ -53,7 +54,13 @@ Auf dem Server wird weder npm noch Node installiert: Das Image enthält alles. G
    APP_URL=https://ihre-domain.de
    ADMIN_EMAILS=ihre@mail.de
    CRON_SECRET=<langer Zufallstext>
+   SMTP_HOST=<Mailserver Ihres Postfachs>
+   SMTP_PORT=587
+   SMTP_USER=<Postfach/Benutzername>
+   SMTP_PASS=<Passwort>   (Geheimnis, nicht in den Chat oder ins Repository)
+   MAIL_FROM=<Absenderadresse, z. B. noreply@ihre-domain.de>
    ```
+   **E-Mail-Versand ist Pflicht:** Neue Konten müssen ihre E-Mail-Adresse per Link bestätigen, bevor sie sich anmelden können. Ohne SMTP-Zugang kommt keine Mail an, und niemand kann sich registrieren. Die Zugangsdaten bekommen Sie von dem Postfach, über das gesendet werden soll (Server, Port und Benutzer entnehmen Sie den Einstellungen des Postfachs in mStudio). Ein Test: Registrieren Sie sich mit einer eigenen Adresse; die Mail muss ankommen.
    `NODE_ENV`, `PORT=3000`, `DATA_DIR=/data` und `STORAGE_DIR=/storage` sind im Image bereits gesetzt.
 5. Container starten. Update später: Image neu ziehen/Container neu starten.
 
@@ -62,7 +69,8 @@ Nicht geprüft: Der Image-Build lief in dieser Entwicklungsumgebung nicht (kein 
 ## Nach dem Start prüfen
 
 - `https://ihre-domain.de/` lädt, Schloss im Browser vorhanden.
-- Registrieren, anmelden (Cookies sind im Produktionsmodus „secure“, funktionieren also nur über HTTPS).
+- Registrieren: Die Bestätigungs-Mail muss ankommen (auch im Spam-Ordner prüfen). Erst nach Klick auf den Link ist die Anmeldung möglich.
+- Anmelden (Cookies sind im Produktionsmodus „secure“, funktionieren also nur über HTTPS).
 - Mit der Adresse aus `ADMIN_EMAILS` registrieren: Menüpunkt „Prüfung“ erscheint.
 - Abo-Seite zeigt „Test-Modus“, solange keine PayPal-Zugangsdaten gesetzt sind.
 
@@ -77,6 +85,6 @@ curl -H "Authorization: Bearer $CRON_SECRET" https://ihre-domain.de/api/cron/rem
 
 - **Datenbank:** SQLite in einer Datei. Für einen Test ausreichend, für den Livebetrieb Postgres einplanen.
 - **Uploads:** lokale Dateien. Backups von `DATA_DIR` und `STORAGE_DIR` selbst einrichten.
-- **Mails:** werden nur als Datei in `STORAGE_DIR/outbox` abgelegt, nicht verschickt (Mail-Anbieter fehlt noch).
+- **Mails:** Versand per SMTP (siehe oben). Ohne SMTP-Zugang werden Mails nur als Datei in `STORAGE_DIR/outbox` abgelegt, nicht verschickt; dann kann sich niemand registrieren.
 - **PayPal:** Test-Modus. Für echte Zahlungen Sandbox-Zugangsdaten und Plan-IDs eintragen (`.env.example`).
 - Nur eine App-Instanz betreiben (SQLite und lokale Dateien).

@@ -16,7 +16,7 @@ Stand: v1. Grundlage: `CLAUDE.md` v2. Dieser Plan setzt die dort markierten offe
 | Diashow | Nur Kunde, nur Bilder (Videos später) | Videos/Besucher |
 | Musik | Bibliothek leer, Einträge nur mit geklärter Lizenz | – |
 | PayPal | Subscriptions API; ohne Zugangsdaten läuft ein **Test-Modus** (Mock) | – |
-| E-Mail | Ausgang als Datei/Konsole im Dev, Anbieter per Umgebungsvariable | EU-Anbieter |
+| E-Mail | SMTP per Umgebungsvariablen (`SMTP_*`, `MAIL_FROM`); ohne SMTP nur Datei in `storage/outbox` (Entwicklung). Registrierung verlangt E-Mail-Bestätigung (Link, 24 h gültig) | Transaktionaler EU-Anbieter per API |
 
 ## Nicht erfunden / offen (Platzhalter)
 

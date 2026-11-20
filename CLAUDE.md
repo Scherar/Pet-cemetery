@@ -125,6 +125,7 @@ Grundregeln für den Code:
 - Zeit/Datum: intern UTC speichern, Todesdatum als reines Datum (ohne Uhrzeit) speichern, Berechnungen in expliziter Zeitzone.
 - Geschäftslogik (Kerze, Abo-Laufzeit, Erinnerungsdatum) in eigenen, getesteten Modulen, nicht in UI-Komponenten.
 - Berechtigungen immer serverseitig prüfen, nie nur im UI verstecken.
+- **Registrierung mit E-Mail-Bestätigung:** Konten sind erst nach Klick auf den Link in der Bestätigungs-Mail nutzbar (Link 24 h gültig, einmalig, erneuter Versand höchstens einmal pro Minute, gleiche Antwort für unbekannte Adressen). Dafür ist SMTP nötig (`SMTP_*`, `MAIL_FROM`).
 - Eingaben validieren (z. B. zod), Uploads auf Typ/Größe prüfen, EXIF-Metadaten (Standort!) beim Verarbeiten entfernen.
 - Performance: Bilder responsiv und lazy laden (WebP/AVIF), Übersicht mit großen Datenmengen (viele Gräber) virtualisieren oder nachladen. Zielwerte: **[PLATZHALTER – ergänzen]**.
 
@@ -198,4 +199,4 @@ Kein Rechtsrat – vor Livegang juristisch prüfen lassen.
 ## 17. Stand der Umsetzung (v2)
 
 Gebaut und getestet: Konten, Gedenkorte, Upload mit Limits und Typprüfung, Prüf-Queue (Admin), Freigabestufen, Share-Seite mit `noindex`, Kerze, Erinnerungs-Job, Rückblick-Diashow, PayPal-Subscriptions-Anbindung mit Test-Modus. Details und Befehle: `README.md`, Annahmen: `docs/PLAN.md`.
-Noch nicht live geprüft (braucht echte Zugangsdaten): PayPal-Sandbox/Live, Mail-Versand, Hosting. Videos sind hochladbar, aber nicht in der Diashow.
+Noch nicht live geprüft (braucht echte Zugangsdaten): PayPal-Sandbox/Live, SMTP-Versand der Mails (lokal nur als Datei geprüft), Hosting. Videos sind hochladbar, aber nicht in der Diashow.

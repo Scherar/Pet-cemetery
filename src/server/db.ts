@@ -13,6 +13,12 @@ export function db(): Db {
   const d = new DatabaseSync(process.env.DB_FILE ?? path.join(dir, 'app.db'));
   d.exec('PRAGMA journal_mode = WAL; PRAGMA foreign_keys = ON;');
   d.exec(SCHEMA);
+  // Migration älterer Datenbanken: Spalten für die E-Mail-Bestätigung. Bestehende Konten gelten als bestätigt.
+  const cols = (d.prepare('PRAGMA table_info(users)').all() as { name: string }[]).map((c) => c.name);
+  if (!cols.includes('email_verified_at')) {
+    d.exec('ALTER TABLE users ADD COLUMN email_verified_at TEXT; ALTER TABLE users ADD COLUMN verify_sent_at TEXT;');
+    d.exec("UPDATE users SET email_verified_at = datetime('now')");
+  }
   g.__db = d;
   return d;
 }
@@ -20,7 +26,10 @@ export function db(): Db {
 const SCHEMA = `
 CREATE TABLE IF NOT EXISTS users (
   id INTEGER PRIMARY KEY, email TEXT NOT NULL UNIQUE, pw_hash TEXT NOT NULL,
+  email_verified_at TEXT, verify_sent_at TEXT,
   created_at TEXT NOT NULL DEFAULT (datetime('now')));
+CREATE TABLE IF NOT EXISTS email_tokens (
+  token_hash TEXT PRIMARY KEY, user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE, expires_at TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS sessions (
   token_hash TEXT PRIMARY KEY, user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE, expires_at TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS subscriptions (

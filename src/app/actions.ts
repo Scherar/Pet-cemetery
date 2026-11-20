@@ -10,6 +10,7 @@ import { createSubscription, cancelSubscription } from '@/server/paypal';
 import { addPeriod } from '@/lib/subscription';
 import { PLANS, type PlanId } from '@/lib/config';
 import { sendMail } from '@/server/mail';
+import { sendVerification } from '@/server/verify';
 import { appUrl } from '@/server/paypal';
 
 const fail = (path: string, msg: string): never => redirect(`${path}${path.includes('?') ? '&' : '?'}fehler=${encodeURIComponent(msg)}`);
@@ -19,16 +20,29 @@ export async function register(f: FormData) {
   const p = z.object({ email: z.string().email(), pw: z.string().min(10) }).safeParse({ email: str(f, 'email').toLowerCase(), pw: str(f, 'pw') });
   if (!p.success) fail('/registrieren', 'Bitte geben Sie eine gültige E-Mail-Adresse und ein Passwort mit mindestens 10 Zeichen an.');
   const { email, pw } = p.data!;
-  if (get('SELECT 1 FROM users WHERE email = ?', email)) fail('/registrieren', 'Mit dieser E-Mail-Adresse besteht bereits ein Konto.');
-  const r = run('INSERT INTO users (email, pw_hash) VALUES (?,?)', email, hashPassword(pw));
-  await createSession(Number(r.lastInsertRowid));
-  redirect('/konto');
+  const existing = get<{ id: number; email_verified_at: string | null }>('SELECT id, email_verified_at FROM users WHERE email = ?', email);
+  if (existing?.email_verified_at) fail('/registrieren', 'Mit dieser E-Mail-Adresse besteht bereits ein Konto.');
+  let id = existing?.id;
+  // Ein noch unbestätigtes Konto behält sein ursprüngliches Passwort; es wird nur erneut eine Bestätigung geschickt.
+  if (!id) id = Number(run('INSERT INTO users (email, pw_hash) VALUES (?,?)', email, hashPassword(pw)).lastInsertRowid);
+  try { await sendVerification(id, email); }
+  catch { fail('/registrieren/bestaetigen', 'Die E-Mail konnte gerade nicht gesendet werden. Bitte fordern Sie sie unten erneut an.'); }
+  redirect('/registrieren/bestaetigen?gesendet=1');
+}
+
+/** Bestätigungs-Mail erneut senden. Antwort ist immer gleich, damit nicht ablesbar ist, welche Adressen registriert sind. */
+export async function resendVerification(f: FormData) {
+  const email = str(f, 'email').toLowerCase();
+  const u = get<{ id: number; email_verified_at: string | null }>('SELECT id, email_verified_at FROM users WHERE email = ?', email);
+  if (u && !u.email_verified_at) { try { await sendVerification(u.id, email); } catch { /* Fehler nicht preisgeben */ } }
+  redirect('/registrieren/bestaetigen?gesendet=1');
 }
 
 export async function login(f: FormData) {
   const email = str(f, 'email').toLowerCase();
-  const u = get<{ id: number; pw_hash: string }>('SELECT id, pw_hash FROM users WHERE email = ?', email);
+  const u = get<{ id: number; pw_hash: string; email_verified_at: string | null }>('SELECT id, pw_hash, email_verified_at FROM users WHERE email = ?', email);
   if (!u || !verifyPassword(str(f, 'pw'), u.pw_hash)) fail('/anmelden', 'E-Mail-Adresse oder Passwort stimmen nicht.');
+  if (!u!.email_verified_at) fail('/anmelden?neu=1', 'Bitte bestätigen Sie zuerst Ihre E-Mail-Adresse. Wir haben Ihnen dazu eine Nachricht geschickt.');
   await createSession(u!.id);
   redirect('/konto');
 }
